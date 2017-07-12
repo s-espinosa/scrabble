@@ -1,7 +1,33 @@
 class Scrabble
 
   def score(word)
-    1
+    return 0 if word.nil?
+    multipliers = Array.new(word.length, 1)
+    score_with_multipliers(word, multipliers)
+  end
+
+  def score_with_multipliers(word, multipliers, word_multiplier = 1)
+    return 0 if word.nil?
+    letters = word.upcase.split("")
+    base_score = calculate_base_score(letters, multipliers)
+    base_score = base_score + 10 if word.length >= 7
+    base_score * word_multiplier
+  end
+
+  def calculate_base_score(letters, multipliers)
+    letters.map.with_index do |letter, index|
+      point_values[letter] * multipliers[index]
+    end.sum
+  end
+
+  def score_letters(letters)
+    letters.map do |letter|
+      score_letter(letter)
+    end.sum
+  end
+
+  def score_letter(letter)
+    point_values[letter]
   end
 
   def point_values
